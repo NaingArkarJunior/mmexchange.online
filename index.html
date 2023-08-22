@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="exoclick-site-verification" content="ea2c3ae707628e447f74b35f26f36a82">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script src="https://kit.fontawesome.com/a4bde1e6e3.js" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courgette&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <title>Myanmar Exchange</title>
+
+  <style>
+    .rateText {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .currencyInfoText {
+      font-size: 0.8rem;
+    }
+
+  </style>
+</head>
+
+<body style="height:100vh; max-width:100vw;">
+  <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #212121;">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img src="mmelogo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        MM Exchange Rates
+      </a>
+    </div>
+  </nav>
+  <div class="container-fluid d-flex flex-fill justify-content-center" style="height: 100%;">
+    <div class="d-flex flex-fill  justify-content-center  " style="height: max-content;width: max-content;">
+      <div class="align-items-start" style="width: 90%;height: 100%;">
+        <div class="container-fluid mt-3">
+          <table class="table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Country</th>
+                <th>Rates</th>
+              </tr>
+            </thead>
+            <tbody id="Rates_list">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+</body>
+
+<script src="./countryNames.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+
+
+  axios.get('http://44.217.20.200:8000/rates/last')
+  .then(function (response) {
+    // handle success
+    generateUI(response.data.data.rates,response.data.data.usd);
+  })
+  .catch(function (error) {
+    // handle error
+    console.log(error);
+  })
+
+
+
+  function generateUI(rates,usd) {
+    let arr = (Object.keys(rates))
+    $(document).ready(() => {
+      arr.map((key, index) => {
+        let result = key[0] + key[1]
+        let finalString = `D:\\projects\\New folder\\flags\\3x2\\${result}.svg`
+        $("#Rates_list").append(
+          ` <tr>
+              <td></td>
+              <td>
+                  <img src="${finalString}" class="rounded" alt="Cinque Terre" style="width: 35px;height: 35px;margin-right: 10px;">
+                  ${countryNames[key]}
+                </td>
+              <td><span class="rateText">${(usd/rates[key]).toFixed(2) }</span>
+                <br />
+                <span class="currencyInfoText">${key} / MMK</span>
+              </td>    
+            </tr>
+            `
+        )
+
+      })
+    })
+  }
+</script>
+
+
+
+
+
+
+<!-- <script async type="application/javascript" src="https://a.realsrv.com/ad-provider.js"></script> 
+<script type="application/javascript" 
+data-idzone="4902028"  data-ad_frequency_count="1"  data-ad_frequency_period="720"  data-type="mobile" 
+data-browser_settings="1" 
+data-ad_trigger_method="3" 
+src="https://a.realsrv.com/fp-interstitial.js"></script>
+
+<script type="application/javascript" src="https://a.realsrv.com/video-slider.js"></script>
+<script type="application/javascript">
+  var adConfig = {
+      "idzone": 4902020,
+      "frequency_period": 5,
+      "close_after": 0,
+      "on_complete": "repeat",
+      "branding_enabled": 1,
+      "screen_density": 25,
+      "cta_enabled": 1
+  };
+  ExoVideoSlider.init(adConfig);
+</script> -->
+
+</html>
